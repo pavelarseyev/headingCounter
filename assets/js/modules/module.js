@@ -5,14 +5,13 @@ export function animateHeadings() {
     let alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
     let length = alphabet.length - 1;
-    let time = 3000;
-    let iterations = 10;
+    let time = 700;
+    let iterations = 4;
     let timing = time / iterations;
 
     headings.each((i, item) => {
         wrapLetters(item);
         $(item).attr("data-animated", "false");
-        $(item).find("i").css("opacity", "0");
     });
 
     $(window).on("load scroll", function () {
@@ -24,10 +23,12 @@ export function animateHeadings() {
             let offset = item.getBoundingClientRect().top;
             let animated = $(item).attr("data-animated");
 
-            if(offset <= window.innerHeight * 0.66 && animated === "false"){
+            if(offset <= window.innerHeight * 0.8 && animated === "false"){
                 $(item).attr("data-animated", "true");
 
                 startAnimation(item);
+
+                $(item).addClass("visible");
             }
         });
     }
@@ -45,7 +46,6 @@ export function animateHeadings() {
     function animateLetter(letterHolder, firstLetter) {
         let holder = letterHolder;
         let letter = firstLetter;
-        let opacityStep = 1/iterations;
         let counter = 0;
         let interval;
 
@@ -54,15 +54,10 @@ export function animateHeadings() {
             interval = setInterval(function () {
 
                 holder.innerText = alphabet[randNumber(0, length)];
-
-                holder.style.opacity = opacityStep * counter;
-
                 counter++;
 
                 if (counter >= iterations) {
                     letterHolder.innerText = letter;
-                    holder.style.opacity = 1;
-
                     clearInterval(interval);
                 }
 

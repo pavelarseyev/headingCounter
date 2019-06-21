@@ -3,6 +3,12 @@
     margin: 40px 0 50vh;
     font-size: 60px;
     line-height: 64px;
+    opacity: 0;
+    transition: opacity 0.3s 0.5s;
+
+    &.visible {
+        opacity: 1;
+    }
 
     i {
         font-style: normal;
