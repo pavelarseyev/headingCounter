@@ -3942,9 +3942,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 Object(__WEBPACK_IMPORTED_MODULE_1__libs_binder__["a" /* binder */])({
     bounds: {
-        "html": [__WEBPACK_IMPORTED_MODULE_2__modules_module__["c" /* constants */], __WEBPACK_IMPORTED_MODULE_2__modules_module__["e" /* staticFunctions */]],
-        "body": [__WEBPACK_IMPORTED_MODULE_2__modules_module__["b" /* commonFunction */], __WEBPACK_IMPORTED_MODULE_2__modules_module__["a" /* anotherCommonFunction */]],
-        ".header": __WEBPACK_IMPORTED_MODULE_2__modules_module__["d" /* navFunction */]
+        ".animated": [__WEBPACK_IMPORTED_MODULE_2__modules_module__["a" /* animateHeadings */]]
     },
     runTests: false
 });
@@ -9600,63 +9598,114 @@ var fwa = function fwa() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return constants; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return staticFunctions; });
-/* harmony export (immutable) */ __webpack_exports__["b"] = commonFunction;
-/* harmony export (immutable) */ __webpack_exports__["a"] = anotherCommonFunction;
-/* harmony export (immutable) */ __webpack_exports__["d"] = navFunction;
-/* unused harmony export myUnusedFunction */
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (immutable) */ __webpack_exports__["a"] = animateHeadings;
+function animateHeadings() {
 
-// these properties will be available from anywhere via this.property
-var constants = {
-    isTouch: "ontouchstart" in window ? function () {
-        document.body.classList.add("touch");return true;
-    }() : function () {
-        document.body.classList.add("no-touch");return false;
-    }(),
-    body: $("body")
-};
+    var headings = $(".animated");
 
-// these functions won't run at once, but will be available from anywhere via this.functionName
-var staticFunctions = {
-    sparedFunction: function sparedFunction() {
-        console.log("spareFunction executed");
-    },
-    anotherSparedFunction: function anotherSparedFunction(arg) {
-        console.log("anotherSpareFunction executed with args: " + arg);
-    }
-};
+    var alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-// runs at once. runs on all pages because of bound with 'body' selector
-function commonFunction() {
-    console.log("window was loaded");
-    // isTouch is available from anywhere via this.isTouch
-    console.log("is touch: " + this.isTouch);
-}
+    var length = alphabet.length - 1;
+    var time = 3000;
+    var iterations = 10;
+    var timing = time / iterations;
 
-// runs at once. runs on all pages because of bound with 'body' selector
-function anotherCommonFunction() {
-    window.addEventListener("resize", function () {
-        setTimeout(function () {
-            console.log("window was resized");
-        }, 500);
+    headings.each(function (i, item) {
+        wrapLetters(item);
+        $(item).attr("data-animated", "false");
+        $(item).find("i").css("opacity", "0");
     });
-}
 
-// runs at once. runs on any page, where .header selector can be found
-function navFunction() {
-    console.log("navFunction executed");
-    // body is available from anywhere via this.body
-    console.log("body height:", this.body.height());
-    // static function is available from anywhere via this.functionName
-    this.anotherSparedFunction("myArg");
-}
+    $(window).on("load scroll", function () {
+        animateHeadings(headings);
+    });
 
-// test for tree shaking
-// we can import this function and not use it
-// uglifier will clean it up from minified code
-function myUnusedFunction(val) {
-    return "foo" + val;
+    function animateHeadings($collection) {
+        $collection.each(function (i, item) {
+            var offset = item.getBoundingClientRect().top;
+            var animated = $(item).attr("data-animated");
+
+            if (offset <= window.innerHeight * 0.66 && animated === "false") {
+                $(item).attr("data-animated", "true");
+
+                startAnimation(item);
+            }
+        });
+    }
+
+    function startAnimation(animatedElement) {
+        $(animatedElement).find("i").each(function (i, item) {
+            var firstLetter = item.innerText;
+
+            setTimeout(function () {
+                animateLetter(item, firstLetter);
+            }, randNumber(100, 500));
+        });
+    }
+
+    function animateLetter(letterHolder, firstLetter) {
+        var holder = letterHolder;
+        var letter = firstLetter;
+        var opacityStep = 1 / iterations;
+        var counter = 0;
+        var interval = void 0;
+
+        if (holder.innerText !== " ") {
+
+            interval = setInterval(function () {
+
+                holder.innerText = alphabet[randNumber(0, length)];
+
+                holder.style.opacity = opacityStep * counter;
+
+                counter++;
+
+                if (counter >= iterations) {
+                    letterHolder.innerText = letter;
+                    holder.style.opacity = 1;
+
+                    clearInterval(interval);
+                }
+            }, timing);
+        }
+    }
+
+    function wrapLetters(selector) {
+
+        var selectorText = void 0;
+        var resultHtml = "";
+
+        selectorText = $(selector).html().replace(/[\t\r\n\v]/gi, "").split("");
+
+        for (var i = 0; i < selectorText.length; i++) {
+
+            if (selectorText[i] === "<") {
+
+                var currentTag = "";
+
+                for (var k = i; k < selectorText.length; k++) {
+
+                    if (selectorText[k] === ">") {
+                        currentTag += selectorText[k];
+                        i = k;
+                        break;
+                    }
+
+                    currentTag += selectorText[k];
+                }
+
+                resultHtml += currentTag;
+            } else {
+                resultHtml += "<i>" + (selectorText[i] === " " ? " " : selectorText[i]) + "</i>";
+            }
+        }
+
+        $(selector).html(resultHtml);
+    }
+
+    function randNumber(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
 }
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(335)))
 

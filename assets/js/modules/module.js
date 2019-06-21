@@ -1,48 +1,111 @@
+export function animateHeadings() {
 
-// these properties will be available from anywhere via this.property
-export const constants = {
-    isTouch: "ontouchstart" in window ? function () {document.body.classList.add("touch"); return true;}() : function () {document.body.classList.add("no-touch"); return false;}(),
-    body: $("body")
-};
+    let headings = $(".animated");
 
-// these functions won't run at once, but will be available from anywhere via this.functionName
-export const staticFunctions = {
-    sparedFunction() {
-        console.log("spareFunction executed");
-    },
-    anotherSparedFunction(arg) {
-        console.log(`anotherSpareFunction executed with args: ${arg}`);
-    }
-};
+    let alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-// runs at once. runs on all pages because of bound with 'body' selector
-export function commonFunction() {
-    console.log("window was loaded");
-    // isTouch is available from anywhere via this.isTouch
-    console.log(`is touch: ${this.isTouch}`);
-}
+    let length = alphabet.length - 1;
+    let time = 3000;
+    let iterations = 10;
+    let timing = time / iterations;
 
-// runs at once. runs on all pages because of bound with 'body' selector
-export function anotherCommonFunction() {
-    window.addEventListener("resize", () => {
-        setTimeout(() => {
-            console.log("window was resized");
-        },500);
+    headings.each((i, item) => {
+        wrapLetters(item);
+        $(item).attr("data-animated", "false");
+        $(item).find("i").css("opacity", "0");
     });
-}
 
-// runs at once. runs on any page, where .header selector can be found
-export function navFunction() {
-    console.log("navFunction executed");
-    // body is available from anywhere via this.body
-    console.log("body height:", this.body.height());
-    // static function is available from anywhere via this.functionName
-    this.anotherSparedFunction("myArg");
-}
+    $(window).on("load scroll", function () {
+        animateHeadings(headings);
+    });
 
-// test for tree shaking
-// we can import this function and not use it
-// uglifier will clean it up from minified code
-export function myUnusedFunction(val) {
-    return "foo" + val;
+    function animateHeadings($collection){
+        $collection.each(function(i, item){
+            let offset = item.getBoundingClientRect().top;
+            let animated = $(item).attr("data-animated");
+
+            if(offset <= window.innerHeight * 0.66 && animated === "false"){
+                $(item).attr("data-animated", "true");
+
+                startAnimation(item);
+            }
+        });
+    }
+
+    function startAnimation(animatedElement) {
+        $(animatedElement).find("i").each(function (i, item) {
+            let firstLetter = item.innerText;
+
+            setTimeout(function () {
+                animateLetter(item, firstLetter);
+            }, randNumber(100, 500));
+        });
+    }
+
+    function animateLetter(letterHolder, firstLetter) {
+        let holder = letterHolder;
+        let letter = firstLetter;
+        let opacityStep = 1/iterations;
+        let counter = 0;
+        let interval;
+
+        if (holder.innerText !== " ") {
+
+            interval = setInterval(function () {
+
+                holder.innerText = alphabet[randNumber(0, length)];
+
+                holder.style.opacity = opacityStep * counter;
+
+                counter++;
+
+                if (counter >= iterations) {
+                    letterHolder.innerText = letter;
+                    holder.style.opacity = 1;
+
+                    clearInterval(interval);
+                }
+
+            }, timing);
+        }
+    }
+
+    function wrapLetters(selector) {
+
+        let selectorText;
+        let resultHtml = "";
+
+        selectorText = $(selector).html().replace(/[\t\r\n\v]/gi, "").split("");
+
+        for (let i = 0; i < selectorText.length; i++) {
+
+            if (selectorText[i] === "<") {
+
+                let currentTag = "";
+
+                for (let k = i; k < selectorText.length; k++) {
+
+                    if (selectorText[k] === ">") {
+                        currentTag += selectorText[k];
+                        i = k;
+                        break;
+                    }
+
+                    currentTag += selectorText[k];
+                }
+
+                resultHtml += currentTag;
+
+            } else {
+                resultHtml += "<i>" + (selectorText[i] === " " ? " " : selectorText[i]) + "</i>";
+            }
+        }
+
+        $(selector).html(resultHtml);
+
+    }
+
+    function randNumber(min, max) {
+        return Math.floor((Math.random() * (max - min)) + min);
+    }
 }
