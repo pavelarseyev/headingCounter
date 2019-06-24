@@ -1,0 +1,51 @@
+@keyframes preloader {
+  0% {
+    transform: rotate(570.5deg) scale(0);
+  }
+
+  60% {
+    transform: rotate(210.5deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(210.5deg) scale(1);
+  }
+}
+
+@keyframes preloader-reverse {
+  0% {
+    transform: rotate(-390.5deg) scale(0);
+  }
+
+  60% {
+    transform: rotate(-30.5deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(-30.5deg) scale(1);
+  }
+}
+
+@keyframes preloader-bottom {
+  0% {
+    transform: rotate(450deg) scale(0);
+  }
+
+  60% {
+    transform: rotate(90deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(90deg) scale(1);
+  }
+}
+
+@keyframes preloader-overlay {
+  0% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

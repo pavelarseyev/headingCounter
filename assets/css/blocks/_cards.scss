@@ -1,0 +1,160 @@
+.cards {
+    padding: 70px 15px 104px;
+    background-color: $lightgray;
+
+    @include media('>=desktop') {
+        padding: 0;
+    }
+
+    .slider {
+
+        @include media('>=desktop') {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 15px 81px;
+        }
+
+        @include media('>=large-desktop') {
+            max-width: 1790px;
+            padding: 110px 15px 121px;
+        }
+    }
+
+    .slick-list {
+        margin: 0 -5px;
+        overflow: visible;
+    }
+
+    .slick-track {
+        display: flex;
+        margin-left: 5px;
+
+        @include media('>=desktop') {
+            margin-left: 0;
+        }
+    }
+
+    .slick-slide {
+        display: flex;
+        margin: 0 5px;
+        height: auto;
+        width: 200px;
+
+        @include media(">=tablet") {
+            width: 300px;
+        }
+    }
+
+    .slide {
+        height: 100%;
+        padding: 25px 20px 32px;
+        background-color: $white;
+        color: $darkgray;
+        font-family: $muli;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 25px;
+
+        @include media('>=desktop') {
+            display: flex;
+            flex-direction: column;
+            width: calc(25% - 22.5px);
+            height: auto;
+            margin-right: 30px;
+            padding: 35px 25px 50px;
+            transition: box-shadow .3s, transform .7s;
+            font-size: 17px;
+            line-height: 26px;
+
+            &:nth-of-type(odd) {
+                margin-top: 95px;
+            }
+
+            &:nth-of-type(even) {
+                margin-bottom: 95px;
+            }
+
+            &:nth-of-type(4n) {
+                margin-right: 0;
+            }
+
+            &:hover {
+                transform: translateY(-30px);
+                box-shadow: 2px 2px 15px 10px rgba(0, 0, 0, 0.05);
+            }
+        }
+
+        @include media('>=large-desktop') {
+            padding: 60px 45px 65px;
+            width: calc(25% - 59.25px);
+            margin-right: 79px;
+        }
+
+        img {
+            display: block;
+            width: auto;
+            max-width: 55px;
+            height: auto;
+            max-height: 45px;
+            margin-bottom: 15px;
+
+            @include media('>=desktop') {
+                margin-bottom: 24px;
+            }
+        }
+    }
+
+    h3, .h3 {
+        position: relative;
+        max-width: calc(100% - 10px);
+        margin-bottom: 29px;
+        padding-bottom: 18px;
+
+        @include media('>=desktop') {
+            max-width: 80%;
+            margin-bottom: 36px;
+        }
+
+        @include media('>=large-desktop') {
+            max-width: 67%;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: $blue;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: 0;
+            transform: rotate(-45deg);
+            width: 10px;
+            height: 4px;
+            background-color: $blue;
+        }
+
+        a{
+            @include media(">=desktop"){
+                transition: all 0.3s;
+            }
+        }
+    }
+
+    .slick-controls {
+        margin-top: 30px;
+
+        @include media('>=desktop') {
+            display: none;
+        }
+    }
+}

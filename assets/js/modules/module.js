@@ -1,12 +1,14 @@
+
 export function animateHeadings() {
 
     let headings = $(".animated");
 
-    let alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    let alphabetLower = "abcdefghijklmnopqrstuvwxyz".split("");
+    let alphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    let length = alphabetLower.length - 1;
 
-    let length = alphabet.length - 1;
-    let time = 700;
-    let iterations = 4;
+    let time = 800;
+    let iterations = 3;
     let timing = time / iterations;
 
     headings.each((i, item) => {
@@ -14,12 +16,14 @@ export function animateHeadings() {
         $(item).attr("data-animated", "false");
     });
 
+
     $(window).on("load scroll", function () {
         animateHeadings(headings);
     });
 
+
     function animateHeadings($collection){
-        $collection.each(function(i, item){
+        $($collection).each(function(i, item){
             let offset = item.getBoundingClientRect().top;
             let animated = $(item).attr("data-animated");
 
@@ -34,12 +38,12 @@ export function animateHeadings() {
     }
 
     function startAnimation(animatedElement) {
-        $(animatedElement).find("i").each(function (i, item) {
+        $(animatedElement).find(".letter").each(function (i, item) {
             let firstLetter = item.innerText;
 
             setTimeout(function () {
                 animateLetter(item, firstLetter);
-            }, randNumber(100, 500));
+            }, randNumber(150, 700));
         });
     }
 
@@ -49,11 +53,10 @@ export function animateHeadings() {
         let counter = 0;
         let interval;
 
-        if (holder.innerText !== " ") {
+        if (holder.innerText.match(/[a-z0-9]/i)) {
 
             interval = setInterval(function () {
-
-                holder.innerText = alphabet[randNumber(0, length)];
+                holder.innerText = letter === letter.toUpperCase() ? alphabetUpper[randNumber(0, length)] : alphabetLower[randNumber(0, length)];
                 counter++;
 
                 if (counter >= iterations) {
@@ -70,7 +73,7 @@ export function animateHeadings() {
         let selectorText;
         let resultHtml = "";
 
-        selectorText = $(selector).html().replace(/[\t\r\n\v]/gi, "").split("");
+        selectorText = $(selector).html().split("");
 
         for (let i = 0; i < selectorText.length; i++) {
 
@@ -81,7 +84,7 @@ export function animateHeadings() {
                 for (let k = i; k < selectorText.length; k++) {
 
                     if (selectorText[k] === ">") {
-                        currentTag += selectorText[k];
+                        currentTag += selectorText[k+1] ? selectorText[k+1].match(/[a-z]/i) ? selectorText[k] + " " : selectorText[k] : selectorText[k];
                         i = k;
                         break;
                     }
@@ -91,8 +94,25 @@ export function animateHeadings() {
 
                 resultHtml += currentTag;
 
+            } else if(selectorText[i] === "&"){
+
+                let currentSymbol;
+
+                for (let k = i; k < selectorText.length; k++) {
+
+                    if (selectorText[k] === ">") {
+                        currentTag += selectorText[k+1] ? selectorText[k+1].match(/[a-z]/i) ? selectorText[k] + " " : selectorText[k] : selectorText[k];
+                        i = k;
+                        break;
+                    }
+
+                    currentSymbol += selectorText[k];
+                }
+
+                resultHtml += currentSymbol;
+
             } else {
-                resultHtml += "<i>" + (selectorText[i] === " " ? " " : selectorText[i]) + "</i>";
+                resultHtml += "<span class='letter'>" + (selectorText[i] === " " ? " " : selectorText[i]) + "</span>";
             }
         }
 
