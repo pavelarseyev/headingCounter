@@ -124,3 +124,65 @@ export function animateHeadings() {
         return Math.floor((Math.random() * (max - min)) + min);
     }
 }
+
+export function eye(){
+    let PI = Math.PI;
+    let eye = document.querySelectorAll(".eye");
+
+
+
+    eye.forEach((item, i) => {
+
+        let offsetX = item.getBoundingClientRect().x + item.offsetWidth/2;
+        let offsetY = item.getBoundingClientRect().y + item.offsetHeight/2;
+        // console.log(offsetX, offsetY);
+
+
+        window.addEventListener("mousemove", (e) => {
+            let mouseX = e.x;
+            let mouseY = e.y;
+
+            let x = mouseX - offsetX;
+            let y = mouseY - offsetY;
+            let c = Math.sqrt(x*x + y*y);
+
+            item.style.transform = "rotate(" + sin(x,y,c)  + "deg)";
+
+            function sin(x,y,c) {
+                let result = 0;
+
+
+                if(x > 0 && y <= 0) {
+                    result = Math.asin(x/c);
+                }
+
+                if(x > 0 && y > 0){
+                    result = Math.asin(y/c) + PI/2;
+                }
+
+                if(x <= 0 && y > 0) {
+                    result = Math.abs(Math.asin(x/c)) + PI;
+                }
+
+                if(x <= 0 && y <= 0) {
+                    result = Math.abs(Math.asin(y/c)) + 3*PI/2;
+                }
+
+
+                console.log(result * 180 / PI);
+
+                return (result * 180 / PI);
+
+            }
+        });
+    });
+
+    /*setInterval(function(){
+        let randomDeg = Math.random() * 360;
+
+        eye.forEach((item, i) => {
+            item.style.transform = "rotate(" + randomDeg  + "deg)";
+        });
+    }, Math.random() * 7000);*/
+
+}
