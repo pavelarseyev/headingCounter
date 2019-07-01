@@ -135,7 +135,6 @@ export function eye(){
 
         let offsetX = item.getBoundingClientRect().x + item.offsetWidth/2;
         let offsetY = item.getBoundingClientRect().y + item.offsetHeight/2;
-        // console.log(offsetX, offsetY);
 
 
         window.addEventListener("mousemove", (e) => {
@@ -165,11 +164,8 @@ export function eye(){
                 }
 
                 if(x <= 0 && y <= 0) {
-                    result = Math.abs(Math.asin(y/c)) + 3*PI/2;
+                    result = Math.abs(Math.asin(y/c)) + PI*1.5;
                 }
-
-
-                console.log(result * 180 / PI);
 
                 return (result * 180 / PI);
 
