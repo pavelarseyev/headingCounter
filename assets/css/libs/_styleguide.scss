@@ -85,23 +85,6 @@ body {
     position: relative;
     flex-shrink: 0;
     flex-grow: 1;
-    padding-top: 65px;
-
-    @include media(">=desktop") {
-        padding-top: 120px;
-    }
-
-    @include media(">=large-desktop") {
-        padding-top: 121px;
-    }
-
-    &.home {
-        padding-top: 135px;
-
-        @include media('>=desktop') {
-            padding-top: 310px;
-        }
-    }
 
     &.empty-page {
         padding-top: 0;

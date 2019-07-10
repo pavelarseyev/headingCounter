@@ -12646,7 +12646,6 @@ var constants = {
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (immutable) */ __webpack_exports__["a"] = animateHeadings;
 /* harmony export (immutable) */ __webpack_exports__["b"] = eye;
-
 function animateHeadings() {
 
     var headings = $(".animated");
@@ -12773,10 +12772,11 @@ function eye() {
 
     eye.forEach(function (item, i) {
 
-        var offsetX = item.getBoundingClientRect().x + item.offsetWidth / 2;
-        var offsetY = item.getBoundingClientRect().y + item.offsetHeight / 2;
-
         window.addEventListener("mousemove", function (e) {
+
+            var offsetX = item.getBoundingClientRect().x + item.offsetWidth / 2;
+            var offsetY = item.getBoundingClientRect().y + item.offsetHeight / 2;
+
             var mouseX = e.x;
             var mouseY = e.y;
 
@@ -12809,13 +12809,6 @@ function eye() {
             }
         });
     });
-
-    /*setInterval(function(){
-        let randomDeg = Math.random() * 360;
-         eye.forEach((item, i) => {
-            item.style.transform = "rotate(" + randomDeg  + "deg)";
-        });
-    }, Math.random() * 7000);*/
 }
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(130)))
 

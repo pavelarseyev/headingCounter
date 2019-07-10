@@ -1,4 +1,3 @@
-
 export function animateHeadings() {
 
     let headings = $(".animated");
@@ -22,12 +21,12 @@ export function animateHeadings() {
     });
 
 
-    function animateHeadings($collection){
-        $($collection).each(function(i, item){
+    function animateHeadings($collection) {
+        $($collection).each(function (i, item) {
             let offset = item.getBoundingClientRect().top;
             let animated = $(item).attr("data-animated");
 
-            if(offset <= window.innerHeight * 0.8 && animated === "false"){
+            if (offset <= window.innerHeight * 0.8 && animated === "false") {
                 $(item).attr("data-animated", "true");
 
                 startAnimation(item);
@@ -84,7 +83,7 @@ export function animateHeadings() {
                 for (let k = i; k < selectorText.length; k++) {
 
                     if (selectorText[k] === ">") {
-                        currentTag += selectorText[k+1] ? selectorText[k+1].match(/[a-z]/i) ? selectorText[k] + " " : selectorText[k] : selectorText[k];
+                        currentTag += selectorText[k + 1] ? selectorText[k + 1].match(/[a-z]/i) ? selectorText[k] + " " : selectorText[k] : selectorText[k];
                         i = k;
                         break;
                     }
@@ -94,14 +93,14 @@ export function animateHeadings() {
 
                 resultHtml += currentTag;
 
-            } else if(selectorText[i] === "&"){
+            } else if (selectorText[i] === "&") {
 
                 let currentSymbol;
 
                 for (let k = i; k < selectorText.length; k++) {
 
                     if (selectorText[k] === ">") {
-                        currentTag += selectorText[k+1] ? selectorText[k+1].match(/[a-z]/i) ? selectorText[k] + " " : selectorText[k] : selectorText[k];
+                        currentTag += selectorText[k + 1] ? selectorText[k + 1].match(/[a-z]/i) ? selectorText[k] + " " : selectorText[k] : selectorText[k];
                         i = k;
                         break;
                     }
@@ -125,46 +124,46 @@ export function animateHeadings() {
     }
 }
 
-export function eye(){
+export function eye() {
     let PI = Math.PI;
     let eye = document.querySelectorAll(".eye");
 
 
-
     eye.forEach((item, i) => {
-
-        let offsetX = item.getBoundingClientRect().x + item.offsetWidth/2;
-        let offsetY = item.getBoundingClientRect().y + item.offsetHeight/2;
 
 
         window.addEventListener("mousemove", (e) => {
+
+            let offsetX = item.getBoundingClientRect().x + item.offsetWidth / 2;
+            let offsetY = item.getBoundingClientRect().y + item.offsetHeight / 2;
+
             let mouseX = e.x;
             let mouseY = e.y;
 
             let x = mouseX - offsetX;
             let y = mouseY - offsetY;
-            let c = Math.sqrt(x*x + y*y);
+            let c = Math.sqrt(x * x + y * y);
 
-            item.style.transform = "rotate(" + sin(x,y,c)  + "deg)";
+            item.style.transform = "rotate(" + sin(x, y, c) + "deg)";
 
-            function sin(x,y,c) {
+            function sin(x, y, c) {
                 let result = 0;
 
 
-                if(x > 0 && y <= 0) {
-                    result = Math.asin(x/c);
+                if (x > 0 && y <= 0) {
+                    result = Math.asin(x / c);
                 }
 
-                if(x > 0 && y > 0){
-                    result = Math.asin(y/c) + PI/2;
+                if (x > 0 && y > 0) {
+                    result = Math.asin(y / c) + PI / 2;
                 }
 
-                if(x <= 0 && y > 0) {
-                    result = Math.abs(Math.asin(x/c)) + PI;
+                if (x <= 0 && y > 0) {
+                    result = Math.abs(Math.asin(x / c)) + PI;
                 }
 
-                if(x <= 0 && y <= 0) {
-                    result = Math.abs(Math.asin(y/c)) + PI*1.5;
+                if (x <= 0 && y <= 0) {
+                    result = Math.abs(Math.asin(y / c)) + PI * 1.5;
                 }
 
                 return (result * 180 / PI);
@@ -172,13 +171,4 @@ export function eye(){
             }
         });
     });
-
-    /*setInterval(function(){
-        let randomDeg = Math.random() * 360;
-
-        eye.forEach((item, i) => {
-            item.style.transform = "rotate(" + randomDeg  + "deg)";
-        });
-    }, Math.random() * 7000);*/
-
 }
